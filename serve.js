@@ -6,7 +6,7 @@ port = 4444,
 bodyParser = require('body-parser');
 
 // Make sure to include the JSX transpiler
-require('node-jsx').install();
+// require('node-jsx').install();
 
 // Include static assets. Not advised for production
 app.use(express.static(path.join(__dirname, 'dist')));

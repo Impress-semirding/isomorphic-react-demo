@@ -135,7 +135,7 @@ module.exports =
 	          return item.products.map(function (item2, index) {
 	            return _react2.default.createElement(
 	              "div",
-	              { className: "productItem", onClick: _this4.alertT },
+	              { className: "productItem", onClick: _this4.handerClick },
 	              _react2.default.createElement("img", { className: "tagsonproductsImg", src: item2.picture }),
 	              _react2.default.createElement(
 	                "div",
@@ -158,11 +158,10 @@ module.exports =
 	      );
 	    }
 	  }, {
-	    key: "alertT",
-	    value: function alertT() {
-	      return function () {
-	        alert(11);
-	      };
+	    key: "handerClick",
+	    value: function handerClick() {
+
+	      alert(11);
 	    }
 	  }]);
 

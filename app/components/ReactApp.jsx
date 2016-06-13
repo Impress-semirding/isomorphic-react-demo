@@ -40,7 +40,7 @@ class ProductWaterfall extends Component {
       if(item.Tag === this.props.tag){
         return item.products.map((item2,index)=>{
             return (
-              <div className="productItem" onClick={this.alertT}>
+              <div className="productItem" onClick={this.handerClick}>
                 <img className="tagsonproductsImg" src={item2.picture} />
                 <div className="tagsonproductsName">{item2.name}</div>
                 <div className="tagsonproductPrice">(item2.price)</div>
@@ -53,11 +53,10 @@ class ProductWaterfall extends Component {
       <div className="tagsProducts">{waterList}</div>
       )
   }
-  alertT(){
-    return function(){
+  handerClick(){
+    
           alert(11);
 
-    }
   }
 }
 

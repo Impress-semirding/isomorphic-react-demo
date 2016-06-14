@@ -1,11 +1,13 @@
 # isomorphic-react-demo
 nodejs react服务端渲染
 
+
+### 安装依赖模块
+
+``` bash
+
 npm install
-
-webpack
-
-node server.js
+webpack & node server.js
 
 
-...the compiler Will be very convenient, and look forward to.
+...编译将会优化.

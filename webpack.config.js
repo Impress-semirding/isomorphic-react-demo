@@ -7,13 +7,13 @@ path = require('path');
 
 webpack = require('webpack');
 
-loaders = require('./loaders.config');
 
 module.exports = (function(_this) {
     var serverConfig;
 
     serverConfig = {
       entry: {
+        app : ['webpack/hot/dev-server','webpack-hot-middleware/src/client'],
         index:'./app/components/ReactApp.jsx'
       },
       output: {
@@ -38,21 +38,24 @@ module.exports = (function(_this) {
         __dirname: false
       },
       module: {
-    loaders: [
-            {
-                test: /\.jsx$/,
-                exclude: /(node_modules|bower_components)/,
-                loader: 'babel',
-                query: {
-                    presets: ['es2015']
-                }
-            },
-            { test: /\.css$/, loader: 'style-loader!css-loader' },
-            { test: /\.js$/, loader: 'jsx-loader?harmony' },
-            { test: /\.scss$/, loader: 'style!css!sass?sourceMap'},
-            { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192'}
-        ]
-  }
+        loaders: [
+                {
+                    test: /\.jsx$/,
+                    exclude: /(node_modules|bower_components)/,
+                    loader: 'babel',
+                    query: {
+                        presets: ['es2015']
+                    }
+                },
+                { test: /\.css$/, loader: 'style-loader!css-loader' },
+                { test: /\.js$/, loader: 'jsx-loader?harmony' },
+                { test: /\.scss$/, loader: 'style!css!sass?sourceMap'},
+                { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192'}
+            ]
+      },
+    plugins:[
+      new webpack.HotModuleReplacementPlugin(),
+    ],
       
     }
     return serverConfig;

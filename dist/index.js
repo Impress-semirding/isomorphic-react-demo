@@ -28,7 +28,7 @@ module.exports =
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "bf5780d89be848265bf0"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2f0bf110f6d6926ffcd7"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -687,15 +687,11 @@ module.exports =
 	        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 	          var myArr = JSON.parse(xmlhttp.responseText);
 	          self.setState({ data: self.state.data.concat(myArr) });
-	          //document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
 	        }
 	      };
 	      xmlhttp.open("GET", "/loader-more", true);
 	      xmlhttp.send();
 	    }
-	  }, {
-	    key: "handerClick",
-	    value: function handerClick() {}
 	  }]);
 
 	  return ProductWaterfall;

@@ -28,7 +28,7 @@ module.exports =
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "70f1fea4b57311bd4e06"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "bf5780d89be848265bf0"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -223,7 +223,7 @@ module.exports =
 /******/ 			hotSetStatus("prepare");
 /******/ 			hotCallback = callback;
 /******/ 			hotUpdate = {};
-/******/ 			var chunkId = 1;
+/******/ 			var chunkId = 0;
 /******/ 			{ // eslint-disable-line no-lone-blocks
 /******/ 				/*globals chunkId */
 /******/ 				hotEnsureUpdateChunk(chunkId);
@@ -546,6 +546,13 @@ module.exports =
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = __webpack_require__(1);
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
@@ -554,11 +561,11 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(3);
+	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _tagSelectorPanel = __webpack_require__(4);
+	var _tagSelectorPanel = __webpack_require__(3);
 
 	var _tagSelectorPanel2 = _interopRequireDefault(_tagSelectorPanel);
 
@@ -579,6 +586,7 @@ module.exports =
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TagsOnProducts).call(this, props));
 
 	    _this.state = {
+	      data: _this.props.data,
 	      selectTag: _this.props.data[0].Tag
 	    };
 	    return _this;
@@ -595,13 +603,13 @@ module.exports =
 	        _react2.default.createElement(_tagSelectorPanel2.default, { tags: this.getTags(), onChange: function onChange(tag) {
 	            return _this2.setState({ selectTag: tag });
 	          } }),
-	        _react2.default.createElement(ProductWaterfall, { data: this.props.data, tag: this.state.selectTag })
+	        _react2.default.createElement(ProductWaterfall, { data: this.state.data, tag: this.state.selectTag })
 	      );
 	    }
 	  }, {
 	    key: "getTags",
 	    value: function getTags() {
-	      return this.props.data.map(function (item) {
+	      return this.state.data.map(function (item) {
 	        return item.Tag;
 	      });
 	    }
@@ -623,7 +631,12 @@ module.exports =
 	  function ProductWaterfall(props) {
 	    _classCallCheck(this, ProductWaterfall);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ProductWaterfall).call(this, props));
+	    var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(ProductWaterfall).call(this, props));
+
+	    _this3.state = {
+	      data: _this3.props.data
+	    };
+	    return _this3;
 	  }
 
 	  _createClass(ProductWaterfall, [{
@@ -631,12 +644,12 @@ module.exports =
 	    value: function render() {
 	      var _this4 = this;
 
-	      var waterList = this.props.data.map(function (item) {
+	      var waterList = this.state.data.map(function (item) {
 	        if (item.Tag === _this4.props.tag) {
 	          return item.products.map(function (item2, index) {
 	            return _react2.default.createElement(
 	              "div",
-	              { className: "productItem", onClick: _this4.handerClick },
+	              { className: "productItem", onClick: _this4.loadXMLDoc.bind(_this4) },
 	              _react2.default.createElement("img", { className: "tagsonproductsImg", src: item2.picture }),
 	              _react2.default.createElement(
 	                "div",
@@ -659,25 +672,43 @@ module.exports =
 	      );
 	    }
 	  }, {
-	    key: "handerClick",
-	    value: function handerClick() {
-	      alert(12);
+	    key: "loadXMLDoc",
+	    value: function loadXMLDoc() {
+	      var xmlhttp,
+	          self = this;
+	      if (window.XMLHttpRequest) {
+	        // code for IE7+, Firefox, Chrome, Opera, Safari
+	        xmlhttp = new XMLHttpRequest();
+	      } else {
+	        // code for IE6, IE5
+	        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	      }
+	      xmlhttp.onreadystatechange = function () {
+	        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+	          var myArr = JSON.parse(xmlhttp.responseText);
+	          self.setState({ data: self.state.data.concat(myArr) });
+	          //document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+	        }
+	      };
+	      xmlhttp.open("GET", "/loader-more", true);
+	      xmlhttp.send();
 	    }
+	  }, {
+	    key: "handerClick",
+	    value: function handerClick() {}
 	  }]);
 
 	  return ProductWaterfall;
 	}(_react.Component);
 
 /***/ },
-/* 1 */,
-/* 2 */,
-/* 3 */
+/* 2 */
 /***/ function(module, exports) {
 
 	module.exports = require("react");
 
 /***/ },
-/* 4 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -688,7 +719,7 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(3);
+	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
 

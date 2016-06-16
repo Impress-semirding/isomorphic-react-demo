@@ -7,6 +7,7 @@ export default class TagsOnProducts extends Component{
   constructor(props){
     super(props);
     this.state = {
+      data : this.props.data,
       selectTag:this.props.data[0].Tag,
     }
   }
@@ -15,13 +16,13 @@ export default class TagsOnProducts extends Component{
     return (
       <div className="tagsonproducts">
         <TagSelectorPanel tags={this.getTags()} onChange={(tag)=>this.setState({selectTag:tag})} />
-        <ProductWaterfall data={this.props.data} tag={this.state.selectTag}/>
+        <ProductWaterfall data={this.state.data} tag={this.state.selectTag}/>
       </div>
     )
   }
 
   getTags(){
-    return this.props.data.map((item)=>{
+    return this.state.data.map((item)=>{
       return item.Tag;
     })
   }
@@ -34,13 +35,16 @@ export default class TagsOnProducts extends Component{
 class ProductWaterfall extends Component {
   constructor(props){
     super(props);
+    this.state = {
+      data : this.props.data,
+    }
   }
   render(){
-    let waterList = this.props.data.map((item)=>{
+    let waterList = this.state.data.map((item)=>{
       if(item.Tag === this.props.tag){
         return item.products.map((item2,index)=>{
             return (
-              <div className="productItem" onClick={this.handerClick}>
+              <div className="productItem" onClick={this.loadXMLDoc.bind(this)}>
                 <img className="tagsonproductsImg" src={item2.picture} />
                 <div className="tagsonproductsName">{item2.name}</div>
                 <div className="tagsonproductPrice">(item2.price)</div>
@@ -53,9 +57,22 @@ class ProductWaterfall extends Component {
       <div className="tagsProducts">{waterList}</div>
       )
   }
-  handerClick(){
-    alert(12);
-
+  loadXMLDoc(){
+    var xmlhttp,self= this;
+    if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
+      xmlhttp=new XMLHttpRequest();
+    }
+    else{// code for IE6, IE5
+      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function(){
+      if (xmlhttp.readyState==4 && xmlhttp.status==200){
+        var myArr = JSON.parse(xmlhttp.responseText);
+        self.setState({data:self.state.data.concat(myArr)});
+      }
+    }
+    xmlhttp.open("GET","/loader-more",true);
+    xmlhttp.send();
   }
 }
 

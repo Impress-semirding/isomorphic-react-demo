@@ -13,8 +13,7 @@ module.exports = (function(_this) {
 
     serverConfig = {
       entry: {
-        app : ['webpack/hot/dev-server','webpack-hot-middleware/src/client'],
-        index:'./app/components/ReactApp.jsx'
+        index:['./app/components/ReactApp.jsx']
       },
       output: {
         path: path.join(__dirname, './dist'),

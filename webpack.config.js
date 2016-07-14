@@ -13,12 +13,14 @@ module.exports = (function(_this) {
 
     serverConfig = {
       entry: {
-        index:['./app/components/ReactApp.jsx']
+        index:['webpack-dev-server/client?http://127.0.0.1:9090', 'webpack/hot/only-dev-server','./app/components/ReactApp.jsx']
       },
       output: {
-        path: path.join(__dirname, './dist'),
-        filename: '[name].js',
-        libraryTarget: 'commonjs2'
+        path: path.join(__dirname, './assest'),
+        filename:'[name].js',
+        chunkFilename:'[chunkhash:8].chunk.js',
+        hotUpdateChunkFilename:'[id].js',
+        publicPath: "http://127.0.0.1:9090/static/",
       },
       target: 'node',
       externals: [
@@ -38,24 +40,16 @@ module.exports = (function(_this) {
       },
       module: {
         loaders: [
-                {
-                    test: /\.jsx$/,
-                    exclude: /(node_modules|bower_components)/,
-                    loader: 'babel',
-                    query: {
-                        presets: ['es2015']
-                    }
-                },
                 { test: /\.css$/, loader: 'style-loader!css-loader' },
                 { test: /\.js$/, loader: 'jsx-loader?harmony' },
                 { test: /\.scss$/, loader: 'style!css!sass?sourceMap'},
-                { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192'}
+                { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192'},
+                {test: /\.jsx?$/, loader: 'babel?presets[]=react,presets[]=es2015'}
             ]
       },
     plugins:[
       new webpack.HotModuleReplacementPlugin(),
     ],
-      
     }
     return serverConfig;
 })(this);

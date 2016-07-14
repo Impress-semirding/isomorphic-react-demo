@@ -29,16 +29,22 @@
     "express": "~4.0.0",
     "griddle-react": "^0.1.19",
     "gulp": "^3.9.1",
+    "jsx-loader": "^0.13.2",
+    "koa": "^1.2.0",
+    "koa-static": "^2.0.0",
+    "koa-webpack-dev-middleware": "^1.2.1",
     "literalify": "^0.4.0",
     "lodash": "^4.13.1",
     "node-jsx": "~0.2.0",
+    "open": "0.0.5",
     "react": "15.1.0",
     "react-dom": "^15.1.0",
     "style": "0.0.3",
     "style-loader": "^0.13.0",
     "webpack": "^1.13.1",
     "webpack-dev-middleware": "^1.6.1",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "webpack-hot-middleware": "^2.12.1"
   },
   "devDependencies": {
     "babel-preset-react": "^6.5.0"

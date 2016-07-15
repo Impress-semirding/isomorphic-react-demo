@@ -2,8 +2,8 @@ var React = require('React'),
     ReactDOMServer = require('react-dom/server'),
     browserify = require('browserify'),
     literalify = require('literalify'),
-	ReactApp = React.createFactory(require('../../dist/index.js').default),
-	TagsOnProductsMobileFactory = React.createFactory(require('../../dist/index.js').default);
+	// ReactApp = React.createFactory(require('./../components/ReactApp.jsx').default),
+	TagsOnProductsMobileFactory = React.createFactory(require('./../../dist/index.js').default);
 
 var data = require('./../data/data.json'),
 	_data = require('./../data/data2.json');

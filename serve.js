@@ -29,6 +29,21 @@ var server = new webpackDevServer(compiler, {
     },
 });
 server.listen(9000);
+
+// var webpack = require('webpack');
+// var config = require('./webpack.config.js')
+// var compiler = require('webpack')(config)
+// app.use(require('webpack-dev-middleware')(compiler, {
+// noInfo: false,
+// hot:true,
+// inline: true,
+// publicPath: "/static",
+// stats: {
+//   colors: true
+// }
+// }))
+// app.use(require('webpack-hot-middleware')(compiler));
+
 // Make sure to include the JSX transpiler
 // require('node-jsx').install();
 
@@ -36,7 +51,7 @@ server.listen(9000);
 app.use(express.static(path.join(__dirname, 'dist')));
 // Set view path
 app.set('views', path.join(__dirname, 'views'));
-// set up ejs for templating. You can use whatever
+// set up ejs for templating. You can use whateverß
 app.set('view engine', 'ejs');
 
 // Set up Routes for the application

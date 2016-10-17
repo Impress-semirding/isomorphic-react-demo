@@ -5,12 +5,31 @@ app = express(),
 port = 4444,
 bodyParser = require('body-parser');
 
-var webpack = require('webpack');
-var webpackDevMiddleware = require("webpack-dev-middleware");
-var webpackDevServer = require('webpack-dev-server');
-var config = require("./webpack.config.js");
+const webpack = require('webpack');
+const webpackDevMiddleware = require("webpack-dev-middleware");
+const webpackHotMiddleware = require('webpack-hot-middleware');
+const webpackConfig = require("./webpack.config.js");
 // Make sure to include the JSX transpiler
 // require('node-jsx').install();
+
+const compiler = webpack(webpackConfig);
+
+if (process.env.NODE_ENV === 'production') {
+  compiler.run(function(err, stats) {
+    if(err) throw new Error("webpack", err);
+    console.log("[webpack]", stats.toString({
+      colors: true
+    }));
+  });
+  //app.use(varConfig.publicPath, Express.static(varConfig.assetsPath));
+} else {
+  app.use(webpackDevMiddleware(compiler, {
+    noInfo: true,
+    //colors: true,
+    publicPath: '/'
+  }));
+  app.use(webpackHotMiddleware(compiler));
+}
 
 // Include static assets. Not advised for production
 app.use(express.static(path.join(__dirname, 'dist')));

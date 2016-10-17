@@ -5,14 +5,17 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: {
-    index:['./app/components/ReactApp.jsx']
+    index:[
+      'webpack-hot-middleware/client?reload=true',
+      './app/components/ReactApp.jsx'
+    ]
   },
   output: {
     path: path.join(__dirname, './dist'),
     filename: '[name].js',
     libraryTarget: 'commonjs2'
   },
-  target: 'node',
+
   externals: [
     function(context, request, cb) {
       var isExternal;
@@ -20,14 +23,7 @@ module.exports = {
       cb(null, Boolean(isExternal));
     }
   ],
-  node: {
-    console: false,
-    global: false,
-    process: false,
-    Buffer: false,
-    __filename: false,
-    __dirname: false
-  },
+  
   module: {
     loaders: [
       {
@@ -45,6 +41,7 @@ module.exports = {
     ]
   },
   plugins:[
+    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
   ]
 }

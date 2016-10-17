@@ -47,7 +47,7 @@ class ProductWaterfall extends Component {
               <div className="productItem" onClick={this.loadXMLDoc.bind(this)}>
                 <img className="tagsonproductsImg" src={item2.picture} />
                 <div className="tagsonproductsName">{item2.name}</div>
-                <div className="tagsonproductPrice">(item2.price)</div>
+                <div className="tagsonproductPrice">(dhaodhoitem2.price)</div>
               </div>
             )
         },this)
@@ -75,4 +75,3 @@ class ProductWaterfall extends Component {
     xmlhttp.send();
   }
 }
-

@@ -42,6 +42,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "devDependencies": {
-    "babel-preset-react": "^6.5.0"
+    "babel-preset-react": "^6.5.0",
+    "webpack-hot-middleware": "^2.13.0"
   }
 }

@@ -29,6 +29,7 @@
     "express": "~4.0.0",
     "griddle-react": "^0.1.19",
     "gulp": "^3.9.1",
+    "jsx-loader": "^0.13.2",
     "literalify": "^0.4.0",
     "lodash": "^4.13.1",
     "node-jsx": "~0.2.0",

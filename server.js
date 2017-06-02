@@ -1,5 +1,5 @@
 // server.js
-var express = require('express'),
+const express = require('express'),
 path = require('path'),
 app = express(),
 port = 4444,

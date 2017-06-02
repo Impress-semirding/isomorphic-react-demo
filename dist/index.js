@@ -1,17 +1,55 @@
 module.exports =
 /******/ (function(modules) { // webpackBootstrap
+/******/ 	var parentHotUpdateCallback = this["webpackHotUpdate"];
+/******/ 	this["webpackHotUpdate"] = 
+/******/ 	function webpackHotUpdateCallback(chunkId, moreModules) { // eslint-disable-line no-unused-vars
+/******/ 		hotAddUpdateChunk(chunkId, moreModules);
+/******/ 		if(parentHotUpdateCallback) parentHotUpdateCallback(chunkId, moreModules);
+/******/ 	}
+/******/ 	
 /******/ 	function hotDownloadUpdateChunk(chunkId) { // eslint-disable-line no-unused-vars
-/******/ 		var chunk = require("./" + "" + chunkId + "." + hotCurrentHash + ".hot-update.js");
-/******/ 		hotAddUpdateChunk(chunk.id, chunk.modules);
+/******/ 		var head = document.getElementsByTagName("head")[0];
+/******/ 		var script = document.createElement("script");
+/******/ 		script.type = "text/javascript";
+/******/ 		script.charset = "utf-8";
+/******/ 		script.src = __webpack_require__.p + "" + chunkId + "." + hotCurrentHash + ".hot-update.js";
+/******/ 		head.appendChild(script);
 /******/ 	}
 /******/ 	
 /******/ 	function hotDownloadManifest(callback) { // eslint-disable-line no-unused-vars
+/******/ 		if(typeof XMLHttpRequest === "undefined")
+/******/ 			return callback(new Error("No browser support"));
 /******/ 		try {
-/******/ 			var update = require("./" + "" + hotCurrentHash + ".hot-update.json");
-/******/ 		} catch(e) {
-/******/ 			return callback();
+/******/ 			var request = new XMLHttpRequest();
+/******/ 			var requestPath = __webpack_require__.p + "" + hotCurrentHash + ".hot-update.json";
+/******/ 			request.open("GET", requestPath, true);
+/******/ 			request.timeout = 10000;
+/******/ 			request.send(null);
+/******/ 		} catch(err) {
+/******/ 			return callback(err);
 /******/ 		}
-/******/ 		callback(null, update);
+/******/ 		request.onreadystatechange = function() {
+/******/ 			if(request.readyState !== 4) return;
+/******/ 			if(request.status === 0) {
+/******/ 				// timeout
+/******/ 				callback(new Error("Manifest request to " + requestPath + " timed out."));
+/******/ 			} else if(request.status === 404) {
+/******/ 				// no update available
+/******/ 				callback();
+/******/ 			} else if(request.status !== 200 && request.status !== 304) {
+/******/ 				// other failure
+/******/ 				callback(new Error("Manifest request to " + requestPath + " failed."));
+/******/ 			} else {
+/******/ 				// success
+/******/ 				try {
+/******/ 					var update = JSON.parse(request.responseText);
+/******/ 				} catch(e) {
+/******/ 					callback(e);
+/******/ 					return;
+/******/ 				}
+/******/ 				callback(null, update);
+/******/ 			}
+/******/ 		};
 /******/ 	}
 
 /******/ 	
@@ -28,7 +66,7 @@ module.exports =
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "2f0bf110f6d6926ffcd7"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "ac9b2819ec04ac8b1f3b"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -544,14 +582,521 @@ module.exports =
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(1);
+	__webpack_require__(5);
+	module.exports = __webpack_require__(6);
 
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
+
+	module.exports = require("react");
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+	module.exports = function(module) {
+		if(!module.webpackPolyfill) {
+			module.deprecate = function() {};
+			module.paths = [];
+			// module.parent = undefined by default
+			module.children = [];
+			module.webpackPolyfill = 1;
+		}
+		return module;
+	}
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/*eslint-env browser*/
+
+	var clientOverlay = document.createElement('div');
+	clientOverlay.id = 'webpack-hot-middleware-clientOverlay';
+	var styles = {
+	  background: 'rgba(0,0,0,0.85)',
+	  color: '#E8E8E8',
+	  lineHeight: '1.2',
+	  whiteSpace: 'pre',
+	  fontFamily: 'Menlo, Consolas, monospace',
+	  fontSize: '13px',
+	  position: 'fixed',
+	  zIndex: 9999,
+	  padding: '10px',
+	  left: 0,
+	  right: 0,
+	  top: 0,
+	  bottom: 0,
+	  overflow: 'auto',
+	  dir: 'ltr',
+	  textAlign: 'left'
+	};
+	for (var key in styles) {
+	  clientOverlay.style[key] = styles[key];
+	}
+
+	var ansiHTML = __webpack_require__(8);
+	var colors = {
+	  reset: ['transparent', 'transparent'],
+	  black: '181818',
+	  red: 'E36049',
+	  green: 'B3CB74',
+	  yellow: 'FFD080',
+	  blue: '7CAFC2',
+	  magenta: '7FACCA',
+	  cyan: 'C3C2EF',
+	  lightgrey: 'EBE7E3',
+	  darkgrey: '6D7891'
+	};
+	ansiHTML.setColors(colors);
+
+	var Entities = __webpack_require__(9).AllHtmlEntities;
+	var entities = new Entities();
+
+	exports.showProblems =
+	function showProblems(type, lines) {
+	  clientOverlay.innerHTML = '';
+	  lines.forEach(function(msg) {
+	    msg = ansiHTML(entities.encode(msg));
+	    var div = document.createElement('div');
+	    div.style.marginBottom = '26px';
+	    div.innerHTML = problemType(type) + ' in ' + msg;
+	    clientOverlay.appendChild(div);
+	  });
+	  if (document.body) {
+	    document.body.appendChild(clientOverlay);
+	  }
+	};
+
+	exports.clear =
+	function clear() {
+	  if (document.body && clientOverlay.parentNode) {
+	    document.body.removeChild(clientOverlay);
+	  }
+	};
+
+	var problemColors = {
+	  errors: colors.red,
+	  warnings: colors.yellow
+	};
+
+	function problemType (type) {
+	  var color = problemColors[type] || colors.red;
+	  return (
+	    '<span style="background-color:#' + color + '; color:#fff; padding:2px 4px; border-radius: 2px">' +
+	      type.slice(0, -1).toUpperCase() +
+	    '</span>'
+	  );
+	}
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Based heavily on https://github.com/webpack/webpack/blob/
+	 *  c0afdf9c6abc1dd70707c594e473802a566f7b6e/hot/only-dev-server.js
+	 * Original copyright Tobias Koppers @sokra (MIT license)
+	 */
+
+	/* global window __webpack_hash__ */
+
+	if (false) {
+	  throw new Error("[HMR] Hot Module Replacement is disabled.");
+	}
+
+	var hmrDocsUrl = "http://webpack.github.io/docs/hot-module-replacement-with-webpack.html"; // eslint-disable-line max-len
+
+	var lastHash;
+	var failureStatuses = { abort: 1, fail: 1 };
+	var applyOptions = { ignoreUnaccepted: true };
+
+	function upToDate(hash) {
+	  if (hash) lastHash = hash;
+	  return lastHash == __webpack_require__.h();
+	}
+
+	module.exports = function(hash, moduleMap, options) {
+	  var reload = options.reload;
+	  if (!upToDate(hash) && module.hot.status() == "idle") {
+	    if (options.log) console.log("[HMR] Checking for updates on the server...");
+	    check();
+	  }
+
+	  function check() {
+	    var cb = function(err, updatedModules) {
+	      if (err) return handleError(err);
+
+	      if(!updatedModules) {
+	        if (options.warn) {
+	          console.warn("[HMR] Cannot find update (Full reload needed)");
+	          console.warn("[HMR] (Probably because of restarting the server)");
+	        }
+	        performReload();
+	        return null;
+	      }
+
+	      var applyCallback = function(applyErr, renewedModules) {
+	        if (applyErr) return handleError(applyErr);
+
+	        if (!upToDate()) check();
+
+	        logUpdates(updatedModules, renewedModules);
+	      };
+
+	      var applyResult = module.hot.apply(applyOptions, applyCallback);
+	      // webpack 2 promise
+	      if (applyResult && applyResult.then) {
+	        // HotModuleReplacement.runtime.js refers to the result as `outdatedModules`
+	        applyResult.then(function(outdatedModules) {
+	          applyCallback(null, outdatedModules);
+	        });
+	        applyResult.catch(applyCallback);
+	      }
+
+	    };
+
+	    var result = module.hot.check(false, cb);
+	    // webpack 2 promise
+	    if (result && result.then) {
+	        result.then(function(updatedModules) {
+	            cb(null, updatedModules);
+	        });
+	        result.catch(cb);
+	    }
+	  }
+
+	  function logUpdates(updatedModules, renewedModules) {
+	    var unacceptedModules = updatedModules.filter(function(moduleId) {
+	      return renewedModules && renewedModules.indexOf(moduleId) < 0;
+	    });
+
+	    if(unacceptedModules.length > 0) {
+	      if (options.warn) {
+	        console.warn(
+	          "[HMR] The following modules couldn't be hot updated: " +
+	          "(Full reload needed)\n" +
+	          "This is usually because the modules which have changed " +
+	          "(and their parents) do not know how to hot reload themselves. " +
+	          "See " + hmrDocsUrl + " for more details."
+	        );
+	        unacceptedModules.forEach(function(moduleId) {
+	          console.warn("[HMR]  - " + moduleMap[moduleId]);
+	        });
+	      }
+	      performReload();
+	      return;
+	    }
+
+	    if (options.log) {
+	      if(!renewedModules || renewedModules.length === 0) {
+	        console.log("[HMR] Nothing hot updated.");
+	      } else {
+	        console.log("[HMR] Updated modules:");
+	        renewedModules.forEach(function(moduleId) {
+	          console.log("[HMR]  - " + moduleMap[moduleId]);
+	        });
+	      }
+
+	      if (upToDate()) {
+	        console.log("[HMR] App is up to date.");
+	      }
+	    }
+	  }
+
+	  function handleError(err) {
+	    if (module.hot.status() in failureStatuses) {
+	      if (options.warn) {
+	        console.warn("[HMR] Cannot check for update (Full reload needed)");
+	        console.warn("[HMR] " + err.stack || err.message);
+	      }
+	      performReload();
+	      return;
+	    }
+	    if (options.warn) {
+	      console.warn("[HMR] Update check failed: " + err.stack || err.message);
+	    }
+	  }
+
+	  function performReload() {
+	    if (reload) {
+	      if (options.warn) console.warn("[HMR] Reloading page");
+	      window.location.reload();
+	    }
+	  }
+	};
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(__resourceQuery, module) {/*eslint-env browser*/
+	/*global __resourceQuery __webpack_public_path__*/
+
+	var options = {
+	  path: "/__webpack_hmr",
+	  timeout: 20 * 1000,
+	  overlay: true,
+	  reload: false,
+	  log: true,
+	  warn: true,
+	  name: ''
+	};
+	if (true) {
+	  var querystring = __webpack_require__(10);
+	  var overrides = querystring.parse(__resourceQuery.slice(1));
+	  if (overrides.path) options.path = overrides.path;
+	  if (overrides.timeout) options.timeout = overrides.timeout;
+	  if (overrides.overlay) options.overlay = overrides.overlay !== 'false';
+	  if (overrides.reload) options.reload = overrides.reload !== 'false';
+	  if (overrides.noInfo && overrides.noInfo !== 'false') {
+	    options.log = false;
+	  }
+	  if (overrides.name) {
+	    options.name = overrides.name;
+	  }
+	  if (overrides.quiet && overrides.quiet !== 'false') {
+	    options.log = false;
+	    options.warn = false;
+	  }
+	  if (overrides.dynamicPublicPath) {
+	    options.path = __webpack_require__.p + options.path;
+	  }
+	}
+
+	if (typeof window === 'undefined') {
+	  // do nothing
+	} else if (typeof window.EventSource === 'undefined') {
+	  console.warn(
+	    "webpack-hot-middleware's client requires EventSource to work. " +
+	    "You should include a polyfill if you want to support this browser: " +
+	    "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events#Tools"
+	  );
+	} else {
+	  connect();
+	}
+
+	function EventSourceWrapper() {
+	  var source;
+	  var lastActivity = new Date();
+	  var listeners = [];
+
+	  init();
+	  var timer = setInterval(function() {
+	    if ((new Date() - lastActivity) > options.timeout) {
+	      handleDisconnect();
+	    }
+	  }, options.timeout / 2);
+
+	  function init() {
+	    source = new window.EventSource(options.path);
+	    source.onopen = handleOnline;
+	    source.onerror = handleDisconnect;
+	    source.onmessage = handleMessage;
+	  }
+
+	  function handleOnline() {
+	    if (options.log) console.log("[HMR] connected");
+	    lastActivity = new Date();
+	  }
+
+	  function handleMessage(event) {
+	    lastActivity = new Date();
+	    for (var i = 0; i < listeners.length; i++) {
+	      listeners[i](event);
+	    }
+	  }
+
+	  function handleDisconnect() {
+	    clearInterval(timer);
+	    source.close();
+	    setTimeout(init, options.timeout);
+	  }
+
+	  return {
+	    addMessageListener: function(fn) {
+	      listeners.push(fn);
+	    }
+	  };
+	}
+
+	function getEventSourceWrapper() {
+	  if (!window.__whmEventSourceWrapper) {
+	    window.__whmEventSourceWrapper = {};
+	  }
+	  if (!window.__whmEventSourceWrapper[options.path]) {
+	    // cache the wrapper for other entries loaded on
+	    // the same page with the same options.path
+	    window.__whmEventSourceWrapper[options.path] = EventSourceWrapper();
+	  }
+	  return window.__whmEventSourceWrapper[options.path];
+	}
+
+	function connect() {
+	  getEventSourceWrapper().addMessageListener(handleMessage);
+
+	  function handleMessage(event) {
+	    if (event.data == "\uD83D\uDC93") {
+	      return;
+	    }
+	    try {
+	      processMessage(JSON.parse(event.data));
+	    } catch (ex) {
+	      if (options.warn) {
+	        console.warn("Invalid HMR message: " + event.data + "\n" + ex);
+	      }
+	    }
+	  }
+	}
+
+	// the reporter needs to be a singleton on the page
+	// in case the client is being used by multiple bundles
+	// we only want to report once.
+	// all the errors will go to all clients
+	var singletonKey = '__webpack_hot_middleware_reporter__';
+	var reporter;
+	if (typeof window !== 'undefined') {
+	  if (!window[singletonKey]) {
+	    window[singletonKey] = createReporter();
+	  }
+	  reporter = window[singletonKey];
+	}
+
+	function createReporter() {
+	  var strip = __webpack_require__(11);
+
+	  var overlay;
+	  if (typeof document !== 'undefined' && options.overlay) {
+	    overlay = __webpack_require__(3);
+	  }
+
+	  var styles = {
+	    errors: "color: #ff0000;",
+	    warnings: "color: #999933;"
+	  };
+	  var previousProblems = null;
+	  function log(type, obj) {
+	    var newProblems = obj[type].map(function(msg) { return strip(msg); }).join('\n');
+	    if (previousProblems == newProblems) {
+	      return;
+	    } else {
+	      previousProblems = newProblems;
+	    }
+
+	    var style = styles[type];
+	    var name = obj.name ? "'" + obj.name + "' " : "";
+	    var title = "[HMR] bundle " + name + "has " + obj[type].length + " " + type;
+	    // NOTE: console.warn or console.error will print the stack trace
+	    // which isn't helpful here, so using console.log to escape it.
+	    if (console.group && console.groupEnd) {
+	      console.group("%c" + title, style);
+	      console.log("%c" + newProblems, style);
+	      console.groupEnd();
+	    } else {
+	      console.log(
+	        "%c" + title + "\n\t%c" + newProblems.replace(/\n/g, "\n\t"),
+	        style + "font-weight: bold;",
+	        style + "font-weight: normal;"
+	      );
+	    }
+	  }
+
+	  return {
+	    cleanProblemsCache: function () {
+	      previousProblems = null;
+	    },
+	    problems: function(type, obj) {
+	      if (options.warn) {
+	        log(type, obj);
+	      }
+	      if (overlay && type !== 'warnings') overlay.showProblems(type, obj[type]);
+	    },
+	    success: function() {
+	      if (overlay) overlay.clear();
+	    },
+	    useCustomOverlay: function(customOverlay) {
+	      overlay = customOverlay;
+	    }
+	  };
+	}
+
+	var processUpdate = __webpack_require__(4);
+
+	var customHandler;
+	var subscribeAllHandler;
+	function processMessage(obj) {
+	  switch(obj.action) {
+	    case "building":
+	      if (options.log) {
+	        console.log(
+	          "[HMR] bundle " + (obj.name ? "'" + obj.name + "' " : "") +
+	          "rebuilding"
+	        );
+	      }
+	      break;
+	    case "built":
+	      if (options.log) {
+	        console.log(
+	          "[HMR] bundle " + (obj.name ? "'" + obj.name + "' " : "") +
+	          "rebuilt in " + obj.time + "ms"
+	        );
+	      }
+	      // fall through
+	    case "sync":
+	      if (obj.name && options.name && obj.name !== options.name) {
+	        return;
+	      }
+	      if (obj.errors.length > 0) {
+	        if (reporter) reporter.problems('errors', obj);
+	      } else {
+	        if (reporter) {
+	          if (obj.warnings.length > 0) {
+	            reporter.problems('warnings', obj);
+	          } else {
+	            reporter.cleanProblemsCache();
+	          }
+	          reporter.success();
+	        }
+	        processUpdate(obj.hash, obj.modules, options);
+	      }
+	      break;
+	    default:
+	      if (customHandler) {
+	        customHandler(obj);
+	      }
+	  }
+
+	  if (subscribeAllHandler) {
+	    subscribeAllHandler(obj);
+	  }
+	}
+
+	if (module) {
+	  module.exports = {
+	    subscribeAll: function subscribeAll(handler) {
+	      subscribeAllHandler = handler;
+	    },
+	    subscribe: function subscribe(handler) {
+	      customHandler = handler;
+	    },
+	    useCustomOverlay: function useCustomOverlay(customOverlay) {
+	      if (reporter) reporter.useCustomOverlay(customOverlay);
+	    }
+	  };
+	}
+
+	/* WEBPACK VAR INJECTION */}.call(exports, "?reload=true", __webpack_require__(2)(module)))
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -561,11 +1106,11 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(2);
+	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _tagSelectorPanel = __webpack_require__(3);
+	var _tagSelectorPanel = __webpack_require__(7);
 
 	var _tagSelectorPanel2 = _interopRequireDefault(_tagSelectorPanel);
 
@@ -583,7 +1128,7 @@ module.exports =
 	  function TagsOnProducts(props) {
 	    _classCallCheck(this, TagsOnProducts);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TagsOnProducts).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (TagsOnProducts.__proto__ || Object.getPrototypeOf(TagsOnProducts)).call(this, props));
 
 	    _this.state = {
 	      data: _this.props.data,
@@ -631,7 +1176,7 @@ module.exports =
 	  function ProductWaterfall(props) {
 	    _classCallCheck(this, ProductWaterfall);
 
-	    var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(ProductWaterfall).call(this, props));
+	    var _this3 = _possibleConstructorReturn(this, (ProductWaterfall.__proto__ || Object.getPrototypeOf(ProductWaterfall)).call(this, props));
 
 	    _this3.state = {
 	      data: _this3.props.data
@@ -659,7 +1204,7 @@ module.exports =
 	              _react2.default.createElement(
 	                "div",
 	                { className: "tagsonproductPrice" },
-	                "(item2.price)"
+	                "(dhaodhoitem2.price)"
 	              )
 	            );
 	          }, _this4);
@@ -697,15 +1242,9 @@ module.exports =
 	  return ProductWaterfall;
 	}(_react.Component);
 
-/***/ },
-/* 2 */
-/***/ function(module, exports) {
-
-	module.exports = require("react");
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -715,7 +1254,7 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(2);
+	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
@@ -733,7 +1272,7 @@ module.exports =
 		function TagSelectorPanel(props) {
 			_classCallCheck(this, TagSelectorPanel);
 
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TagSelectorPanel).call(this, props));
+			var _this = _possibleConstructorReturn(this, (TagSelectorPanel.__proto__ || Object.getPrototypeOf(TagSelectorPanel)).call(this, props));
 
 			_this.state = {
 				selectTag: null
@@ -796,5 +1335,29 @@ module.exports =
 
 	exports.default = TagSelectorPanel;
 
-/***/ }
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+	module.exports = require("ansi-html");
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+	module.exports = require("html-entities");
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+	module.exports = require("querystring");
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+	module.exports = require("strip-ansi");
+
+/***/ })
 /******/ ]);

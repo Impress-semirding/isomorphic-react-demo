@@ -4,7 +4,8 @@
   "description": "react nodejs webpack服务端渲染demo",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack & node server.js"
   },
   "repository": {
     "type": "git",
@@ -33,8 +34,8 @@
     "literalify": "^0.4.0",
     "lodash": "^4.13.1",
     "node-jsx": "~0.2.0",
-    "react": "15.1.0",
-    "react-dom": "^15.1.0",
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0",
     "style": "0.0.3",
     "style-loader": "^0.13.0",
     "webpack": "^1.13.1",
@@ -43,6 +44,7 @@
   },
   "devDependencies": {
     "babel-preset-react": "^6.5.0",
+    "webpack": "^1.15.0",
     "webpack-hot-middleware": "^2.13.0"
   }
 }

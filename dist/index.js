@@ -66,7 +66,7 @@ module.exports =
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ac9b2819ec04ac8b1f3b"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "4766084e2cefa6bd7d47"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -1249,7 +1249,7 @@ module.exports =
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1267,70 +1267,70 @@ module.exports =
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var TagSelectorPanel = function (_Component) {
-		_inherits(TagSelectorPanel, _Component);
+	  _inherits(TagSelectorPanel, _Component);
 
-		function TagSelectorPanel(props) {
-			_classCallCheck(this, TagSelectorPanel);
+	  function TagSelectorPanel(props) {
+	    _classCallCheck(this, TagSelectorPanel);
 
-			var _this = _possibleConstructorReturn(this, (TagSelectorPanel.__proto__ || Object.getPrototypeOf(TagSelectorPanel)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (TagSelectorPanel.__proto__ || Object.getPrototypeOf(TagSelectorPanel)).call(this, props));
 
-			_this.state = {
-				selectTag: null
-			};
-			return _this;
-		}
+	    _this.state = {
+	      selectTag: null
+	    };
+	    return _this;
+	  }
 
-		_createClass(TagSelectorPanel, [{
-			key: "render",
-			value: function render() {
-				var _this2 = this;
+	  _createClass(TagSelectorPanel, [{
+	    key: "render",
+	    value: function render() {
+	      var _this2 = this;
 
-				var tagLenth = this.props.tags.length,
-				    flag = 0;
-				var tags = this.props.tags.map(function (tag) {
-					if (tag === "") {
-						flag++;
-					}
-					var tagActiveClass = _this2.state.selectTag === tag ? "active" : "";
-					return _react2.default.createElement(
-						"a",
-						{ className: "tagItem " + tagActiveClass, href: "javascript:void(0)", onClick: _this2.changeSelect.bind(_this2, tag) },
-						tag
-					);
-				});
-				if (flag === tagLenth) {
-					return _react2.default.createElement("div", { className: "hide" });
-				}
-				return _react2.default.createElement(
-					"div",
-					{ className: "tags", style: { width: "7.5rem" } },
-					_react2.default.createElement(
-						"div",
-						{ className: "tagList" },
-						tags
-					)
-				);
-			}
-		}, {
-			key: "componentDidMount",
-			value: function componentDidMount() {
-				if (typeof this.props.tags !== "undefined" && this.props.tags.length > 0) {
-					this.changeSelect(this.props.tags[0]);
-				}
-			}
-		}, {
-			key: "changeSelect",
-			value: function changeSelect(tag) {
-				var _this3 = this;
+	      var tagLenth = this.props.tags.length,
+	          flag = 0;
+	      var tags = this.props.tags.map(function (tag) {
+	        if (tag === "") {
+	          flag++;
+	        }
+	        var tagActiveClass = _this2.state.selectTag === tag ? "active" : "";
+	        return _react2.default.createElement(
+	          "a",
+	          { className: "tagItem " + tagActiveClass, href: "javascript:void(0)", onClick: _this2.changeSelect.bind(_this2, tag) },
+	          tag
+	        );
+	      });
+	      if (flag === tagLenth) {
+	        return _react2.default.createElement("div", { className: "hide" });
+	      }
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "tags", style: { width: "7.5rem" } },
+	        _react2.default.createElement(
+	          "div",
+	          { className: "tagList" },
+	          tags
+	        )
+	      );
+	    }
+	  }, {
+	    key: "componentDidMount",
+	    value: function componentDidMount() {
+	      if (typeof this.props.tags !== "undefined" && this.props.tags.length > 0) {
+	        this.changeSelect(this.props.tags[0]);
+	      }
+	    }
+	  }, {
+	    key: "changeSelect",
+	    value: function changeSelect(tag) {
+	      var _this3 = this;
 
-				this.setState({ selectTag: tag }, function () {
-					window.scrollTo(0, 0);
-					_this3.props.onChange && _this3.props.onChange(tag);
-				});
-			}
-		}]);
+	      this.setState({ selectTag: tag }, function () {
+	        window.scrollTo(0, 0);
+	        _this3.props.onChange && _this3.props.onChange(tag);
+	      });
+	    }
+	  }]);
 
-		return TagSelectorPanel;
+	  return TagSelectorPanel;
 	}(_react.Component);
 
 	exports.default = TagSelectorPanel;

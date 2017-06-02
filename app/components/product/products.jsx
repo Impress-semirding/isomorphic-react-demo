@@ -4,7 +4,7 @@ export default class App extends React.Component{
   render(){
     return (
       <div>
-          test颠三倒四
+        test
       </div>
     )
   }
